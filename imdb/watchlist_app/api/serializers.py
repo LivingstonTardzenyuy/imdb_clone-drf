@@ -22,3 +22,8 @@ class MovieSerializers(serializers.Serializer):
 
         instance.save()
         return instance
+
+
+    def validate_name(self, value):
+        if len(value) > 10:
+            raise serializers.ValidationError("Movie name must be less than 10 letters")
