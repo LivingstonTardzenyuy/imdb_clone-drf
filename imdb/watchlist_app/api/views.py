@@ -5,15 +5,15 @@ from watchlist_app.api.serializers import MovieSerializers
 from django.shortcuts import redirect
 from rest_framework import status
 
+from rest_framework.views import APIView
 
-@api_view(['GET', 'POST'])
-def home(request):
-    if request.method == 'GET':
+class MovieList(APIView):
+    def get(self, request, format = None):
         movie = Movie.objects.all()
         serializers = MovieSerializers(movie, many = True)
         return Response(serializers.data, status = status.HTTP_200_OK)
 
-    if request.method == 'POST':
+    def post(self, request, format = None):
         serializers = MovieSerializers(data = request.data)
         if serializers.is_valid():
             serializers.save()
@@ -22,31 +22,26 @@ def home(request):
             return Response(serializers.errors, status = status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def movie_details(request, pk):
-    if request.method == 'GET':
+class MovieDetails(APIView):
+    def get(self, request, pk):
         try:
-            movie = Movie.objects.get(pk=pk)
-        except MovieDoesNotExists():
-            return Response({"error: Movie not found"}, status = status.HTTP_404_NOT_FOUND)
-        
+            movie = Movie.objects.get(pk = pk)
+        except Movie.DoesNotExist:
+            return Response({"error": "Movie does not exist"}, status = status.HTTP_404_NOT_FOUND)
         serializers = MovieSerializers(movie)
         return Response(serializers.data, status = status.HTTP_200_OK)
 
-    if request.method == 'PUT':
-        movie = Movie.objects.get(pk=pk)
-        serializers = MovieSerializers(movie, data= request.data)
+
+    def post(self, request, pk):
+        movie = Movie.objects.get(pk = pk)
+        serializers = MovieSerializers(movie, data = request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response(serializers.data, status = status.HTTP_200_OK)
+            return Response(serializers.data, status = status.HTTP_201_CREATED)
         else:
-            return Response(serializers.errors, status = status.HTTP_404_NOT_FOUND)
+            return Response(serializers.errors, status = status.HTTP_400_BAD_REQUEST)
 
-
-    if request.method == 'DELETE':
+    def delete(self, request, pk):
         movie = Movie.objects.get(pk = pk)
         movie.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
-
-
-
