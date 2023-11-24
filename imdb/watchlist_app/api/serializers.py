@@ -1,24 +1,27 @@
 from rest_framework import serializers 
-from watchlist_app.models import Movie
+from watchlist_app.models import WatchList, StreamPlatForm
 
-class MovieSerializers(serializers.Serializer):
-    id = serializers.IntegerField(read_only = True)
-    name = serializers.CharField()
-    description = serializers.CharField()
-    active = serializers.BooleanField()
+class WatchListSerializers(serializers.ModelSerializer):
 
-    # class Meta:
-    #     models = Movie 
-    #     fields = "__all__"
+    length_name = serializers.SerializerMethodField()           #allows me to define a field 
+
+    class Meta:
+        model = WatchList 
+        fields = "__all__"
+
+    def get_length_name(self, object):
+        length = len(object.title)
+        return length
+
+    
+    def validate(self, data):
+        if data['title'] == data['description']:
+            return serializers.ValidationError("the title and description should be different")
+        else:
+            return data 
 
 
-    def create(self, validated_data):
-        return Movie.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.description = validated_data.get('description', instance.description)
-        instance.active = validated_data.get('active', instance.active)
-
-        instance.save()
-        return instance
+class StreamPlatFormSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = StreamPlatForm
+        fields = "__all__"
