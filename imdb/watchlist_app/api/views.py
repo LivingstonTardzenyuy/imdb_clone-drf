@@ -13,13 +13,13 @@ class MovieList(APIView):
         serializers = MovieSerializers(movie, many = True)
         return Response(serializers.data, status = status.HTTP_200_OK)
 
-    def post(self, request, format = None):
-        serializers = MovieSerializers(data = request.data)
+    def post(self, request):
+        serializers = MovieSerializers(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response(serializers.data, status = status.HTTP_201_CREATED)
+            return Response(serializers.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializers.errors, status = status.HTTP_400_BAD_REQUEST)
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MovieDetails(APIView):
