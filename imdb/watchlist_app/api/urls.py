@@ -7,5 +7,6 @@ urlpatterns = [
 
 
     path('streamplatform/', StreamPlatFormList.as_view(), name = 'streamplatform'),
+    path('streamplatform/<int:pk>/', StreamPlatFormDetails.as_view(), name = 'streamplatform-detail')
 ]
 

@@ -23,7 +23,28 @@ class StreamPlatFormList(APIView):
         else:
             return Response(serializers.errors, status = status.HTTP_400_BAD_REQUEST)
 
+class StreamPlatFormDetails(APIView):
+    def get(self, request, pk):
+        try:
+            streamplatform = StreamPlatForm.objects.get(pk=pk)
+        except StreamPlatForm.DoesNotExist:
+            return Response({"error" : "StreamPlatform does not exists"}, status = status.HTTP_404_NOT_FOUND)
+        serializer = StreamPlatFormSerializers(streamplatform)
+        return Response(serializer.data, status = status.HTTP_200_OK)
 
+    def put(self, request, pk):
+        streamplatform = StreamPlatForm.objects.get(pk = pk)
+        serializer = StreamPlatFormSerializers(streamplatform, data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.error, status = status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        streamplatform = StreamPlatForm.objects.get(pk = pk)
+        streamplatform.delete()
+        return Response(status = status.HTTP_204_NO_CONTENT)
 
 
 class WatchListList(APIView):
@@ -51,7 +72,7 @@ class WatchListDetails(APIView):
         return Response(serializers.data, status = status.HTTP_200_OK)
 
 
-    def post(self, request, pk):
+    def put(self, request, pk):
         watchlist = WatchList.objects.get(pk = pk)
         serializers = WatchListSerializers(watchlist, data = request.data)
         if serializers.is_valid():
