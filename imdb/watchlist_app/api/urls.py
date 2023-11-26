@@ -10,7 +10,10 @@ urlpatterns = [
 
     path('streamplatform/<int:pk>/reviews/', StreamPlatFormDetails.as_view(), name = 'streamplatform-detail'),          #allows me to access alll reviews for a particular movie. 
     
-    path('reviews/<int:pk>/', ReviewsListDetails.as_view(), name = 'review-detials'),            #accessing individual reviews. 
-    path('reviews/', ReviewsList.as_view(), name = "reviews"),
+
+    
+    path('stream/<int:pk>/reviews/', ReviewsList.as_view(), name = 'review-detials'),            #accessing individual reviews. 
+    path('stream/<int:pk>/reviews-create', ReviewsCreate.as_view(), name = 'review-create'),
+    path('stream/review/<int:pk>/', ReviewsListDetails.as_view(), name = "reviews"),
 ]
 

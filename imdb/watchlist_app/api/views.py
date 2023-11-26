@@ -12,9 +12,25 @@ from rest_framework import generics
 from rest_framework import generics
 
 
-class ReviewsList(generics.ListCreateAPIView):
-    queryset = Reviews.objects.all()
+class ReviewsList(generics.ListAPIView):
+    # queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers 
+
+    def get_queryset(self):             #overwritting since we have a foreign key that we need to obtain. 
+        pk = self.kwargs['pk']
+        return Reviews.objects.filter(watchlist = pk)
+
+class ReviewsCreate(generics.CreateAPIView):
+    serializer_class = ReviewsSerializers 
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs['pk']
+
+        movie = WatchList.objects.get(pk = pk)
+        
+        serializer.save(watchlist = movie)
+        # return Reviews.objects.create(watchlist = pk)
+
 
 
 class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
