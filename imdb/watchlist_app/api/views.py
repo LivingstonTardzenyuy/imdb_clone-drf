@@ -9,34 +9,55 @@ from rest_framework.views import APIView
 
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework import generics
 
-class ReviewsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+
+class ReviewsList(generics.ListCreateAPIView):
+    queryset = Reviews.objects.all()
+    serializer_class = ReviewsSerializers 
+
+
+class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers
+ 
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+
+
+
+
+
+
+
+
+
+# class ReviewsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+#     queryset = Reviews.objects.all()
+#     serializer_class = ReviewsSerializers
+
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
         
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
 
 
-class ReviewsListDetails(mixins.RetrieveModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    generics.GenericAPIView):
+# class ReviewsListDetails(mixins.RetrieveModelMixin,
+#                     mixins.UpdateModelMixin,
+#                     mixins.DestroyModelMixin,
+#                     generics.GenericAPIView):
 
-    queryset = Reviews.objects.all()
-    serializer_class = ReviewsSerializers
+#     queryset = Reviews.objects.all()
+#     serializer_class = ReviewsSerializers
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
         
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+#     def put(self, request, *args, **kwargs):
+#         return self.update(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
 
 class StreamPlatFormList(APIView):
     def get(self, request, format = None):
