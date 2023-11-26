@@ -7,9 +7,10 @@ urlpatterns = [
 
 
     path('streamplatform/', StreamPlatFormList.as_view(), name = 'streamplatform'),
-    path('streamplatform/<int:pk>/', StreamPlatFormDetails.as_view(), name = 'streamplatform-detail'),
 
-
+    path('streamplatform/<int:pk>/reviews/', StreamPlatFormDetails.as_view(), name = 'streamplatform-detail'),          #allows me to access alll reviews for a particular movie. 
+    
+    path('reviews/<int:pk>/', ReviewsListDetails.as_view(), name = 'review-detials'),            #accessing individual reviews. 
     path('reviews/', ReviewsList.as_view(), name = "reviews"),
 ]
 
