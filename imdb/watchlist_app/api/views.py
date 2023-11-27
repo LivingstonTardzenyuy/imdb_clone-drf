@@ -10,6 +10,8 @@ from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import generics
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 
 class ReviewsList(generics.ListAPIView):
@@ -39,41 +41,9 @@ class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
  
 
 
-
-
-
-
-
-
-
-
-# class ReviewsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-#     queryset = Reviews.objects.all()
-#     serializer_class = ReviewsSerializers
-
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-        
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
-
-
-# class ReviewsListDetails(mixins.RetrieveModelMixin,
-#                     mixins.UpdateModelMixin,
-#                     mixins.DestroyModelMixin,
-#                     generics.GenericAPIView):
-
-#     queryset = Reviews.objects.all()
-#     serializer_class = ReviewsSerializers
-
-#     def get(self, request, *args, **kwargs):
-#         return self.retrieve(request, *args, **kwargs)
-        
-#     def put(self, request, *args, **kwargs):
-#         return self.update(request, *args, **kwargs)
-
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)
+class StreamPlatFormAV(viewsets.ModelViewSet):
+    queryset = StreamPlatForm.objects.all()
+    serializer_class = StreamPlatFormSerializers 
 
 class StreamPlatFormList(APIView):
     def get(self, request, format = None):
