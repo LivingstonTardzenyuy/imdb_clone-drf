@@ -16,7 +16,7 @@ class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers 
 
-    def get_queryset(self):             #overwritting since we have a foreign key that we need to obtain. 
+    def get_queryset(self):             #overwritting since  we have a foreign key that we need to obtain. 
         pk = self.kwargs['pk']
         return Reviews.objects.filter(watchlist = pk)
 
