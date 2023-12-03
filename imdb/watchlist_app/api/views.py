@@ -10,13 +10,18 @@ from rest_framework.views import APIView
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import generics
+from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from watchlist_app.api.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
 
 
 class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ReviewsSerializers 
 
-    def get_queryset(self):             #overwritting since we have a foreign key that we need to obtain. 
+    def get_queryset(self):             #overwritting since  we have a foreign key that we need to obtain. 
         pk = self.kwargs['pk']
         return Reviews.objects.filter(watchlist = pk)
 
@@ -32,48 +37,15 @@ class ReviewsCreate(generics.CreateAPIView):
         # return Reviews.objects.create(watchlist = pk)
 
 
-
 class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers
- 
+    permission_classes = [ReviewUserOrReadOnly]
 
 
-
-
-
-
-
-
-
-
-# class ReviewsList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
-#     queryset = Reviews.objects.all()
-#     serializer_class = ReviewsSerializers
-
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-        
-#     def post(self, request, *args, **kwargs):
-#         return self.create(request, *args, **kwargs)
-
-
-# class ReviewsListDetails(mixins.RetrieveModelMixin,
-#                     mixins.UpdateModelMixin,
-#                     mixins.DestroyModelMixin,
-#                     generics.GenericAPIView):
-
-#     queryset = Reviews.objects.all()
-#     serializer_class = ReviewsSerializers
-
-#     def get(self, request, *args, **kwargs):
-#         return self.retrieve(request, *args, **kwargs)
-        
-#     def put(self, request, *args, **kwargs):
-#         return self.update(request, *args, **kwargs)
-
-#     def delete(self, request, *args, **kwargs):
-#         return self.destroy(request, *args, **kwargs)
+class StreamPlatFormAV(viewsets.ModelViewSet):
+    queryset = StreamPlatForm.objects.all()
+    serializer_class = StreamPlatFormSerializers 
 
 class StreamPlatFormList(APIView):
     def get(self, request, format = None):
