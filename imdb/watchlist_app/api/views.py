@@ -12,10 +12,13 @@ from rest_framework import generics
 from rest_framework import generics
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from watchlist_app.api.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
 
 
 class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = ReviewsSerializers 
 
     def get_queryset(self):             #overwritting since  we have a foreign key that we need to obtain. 
@@ -34,11 +37,10 @@ class ReviewsCreate(generics.CreateAPIView):
         # return Reviews.objects.create(watchlist = pk)
 
 
-
 class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers
- 
+    permission_classes = [ReviewUserOrReadOnly]
 
 
 class StreamPlatFormAV(viewsets.ModelViewSet):

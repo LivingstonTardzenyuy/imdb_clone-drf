@@ -10,7 +10,7 @@ urlpatterns = [
     path('', WatchListList.as_view(), name = 'home'),
     path('watchlist/<int:pk>/', WatchListDetails.as_view(), name = 'watchlist-details'),
 
-
+# ReviewsListDetails
     # path('streamplatform/', StreamPlatFormList.as_view(), name = 'streamplatform'),
     # path('streamplatform/<int:pk>/reviews/', StreamPlatFormDetails.as_view(), name = 'streamplatform-detail'),          #allows me to access alll reviews for a particular movie. 
     
