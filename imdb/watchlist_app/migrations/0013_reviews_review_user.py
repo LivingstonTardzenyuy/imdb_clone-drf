@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
             model_name='reviews',
             name='review_user',
             field=models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
-            preserve_default=False,
+            # preserve_default=False,
         ),
     ]
