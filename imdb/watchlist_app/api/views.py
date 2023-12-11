@@ -13,7 +13,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from watchlist_app.api.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
+from watchlist_app.api.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 
 
 class ReviewsList(generics.ListAPIView):
@@ -44,10 +44,14 @@ class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
 
 
 class StreamPlatFormAV(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = StreamPlatForm.objects.all()
     serializer_class = StreamPlatFormSerializers 
 
 class StreamPlatFormList(APIView):
+    permission_classes = [ReviewUserOrReadOnly]
+
     def get(self, request, format = None):
         streamplatform = StreamPlatForm.objects.all()
         serializers = StreamPlatFormSerializers(streamplatform, many = True, context = {'request': request})
@@ -87,6 +91,8 @@ class StreamPlatFormDetails(APIView):
 
 
 class WatchListList(APIView):
+
+    permission_classes = [IsAdminOrReadOnly]
     def get(self, request, format = None):
         watchlist = WatchList.objects.all()
         serializers = WatchListSerializers(watchlist, many = True)
@@ -102,6 +108,7 @@ class WatchListList(APIView):
 
 
 class WatchListDetails(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     def get(self, request, pk):
         try:
             watchlist = WatchList.objects.get(pk = pk)
