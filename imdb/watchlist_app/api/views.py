@@ -27,7 +27,7 @@ class ReviewsList(generics.ListAPIView):
 
 class ReviewsCreate(generics.CreateAPIView):
     serializer_class = ReviewsSerializers 
-    
+    permission_classes = [IsAuthenticated]    
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
 
