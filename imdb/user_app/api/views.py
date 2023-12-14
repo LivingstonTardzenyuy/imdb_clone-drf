@@ -2,11 +2,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from user_app.api.serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token 
-# from user_app import models
+from user_app import models
 from rest_framework import status
 
 #jwt
-from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @api_view(["POST"])
@@ -30,15 +30,15 @@ def registration_view(request):
             data['email'] = account.email 
             
             #authomatic creation of tokens using Token base auth
-            # token = Token.objects.get(user = account).key 
-            # data['token'] = token 
+            token = Token.objects.get(user = account).key 
+            data['token'] = token 
             
             #authomatic creation of tokens using JWT base auth
-            refresh = RefreshToken.for_user(account)
-            data['token'] = {
-                'refresh': str(refresh),
-                'access': str(refresh.access_token)
-                }
+            # refresh = RefreshToken.for_user(account)
+            # data['token'] = {
+            #     'refresh': str(refresh),
+            #     'access': str(refresh.access_token)
+            #     }
             
             # return Response(data, status=201)  # HTTP 201 Created for successful registration
         else:
