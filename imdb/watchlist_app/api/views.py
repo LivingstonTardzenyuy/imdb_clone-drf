@@ -22,10 +22,14 @@ class UserReviews(generics.ListAPIView):
     serializer_class = ReviewsSerializers
     throttle_classes = [ReviewListThrottle]
     
-    def get_queryset(self):
-        username = self.kwargs['username']              #get the username of the user
-        return Reviews.objects.filter(review_user__username = username)
+    # def get_queryset(self):
+    #     username = self.kwargs['username']              #get the username of the user
+    #     return Reviews.objects.filter(review_user__username = username)
 
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        return Reviews.objects.filter(review_user__username = username)
+    
 
 class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
