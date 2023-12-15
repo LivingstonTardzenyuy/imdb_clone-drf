@@ -9,6 +9,7 @@ router.register('stream', StreamPlatFormAV, basename = 'streamplatform')
 urlpatterns = [
     path('', WatchListList.as_view(), name = 'home'),
     path('watchlist/<int:pk>/', WatchListDetails.as_view(), name = 'watchlist-details'),
+    path('list2', WatchListAV.as_view(), name='movie-details'),
 
 # ReviewsListDetails
     # path('streamplatform/', StreamPlatFormList.as_view(), name = 'streamplatform'),
@@ -19,5 +20,7 @@ urlpatterns = [
     path('stream/<int:pk>/reviews/', ReviewsList.as_view(), name = 'review-detials'),            #accessing individual reviews. 
     path('stream/<int:pk>/reviews-create', ReviewsCreate.as_view(), name = 'review-create'),
     path('review/<int:pk>/', ReviewsListDetails.as_view(), name = "reviews"),
+    
+    path('reviews/', UserReviews.as_view(), name = 'user')
 ]
 
