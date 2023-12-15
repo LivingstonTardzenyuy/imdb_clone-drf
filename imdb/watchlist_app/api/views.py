@@ -17,6 +17,16 @@ from watchlist_app.api.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnl
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle 
 from watchlist_app.api.throttle import ReviewsCreateThrottle, ReviewListThrottle
 
+class UserReviews(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ReviewsSerializers
+    throttle_classes = [ReviewListThrottle]
+    
+    def get_queryset(self):
+        pk = self.kwargs['username']
+        return Review.objects.filter(watchlist = pk)
+
+
 class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
     permission_classes = [IsAuthenticated]
