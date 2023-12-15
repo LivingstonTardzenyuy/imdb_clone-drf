@@ -14,7 +14,7 @@ from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from watchlist_app.api.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
-
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle 
 
 class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
@@ -36,12 +36,11 @@ class ReviewsCreate(generics.CreateAPIView):
         serializer.save(watchlist = movie)
         # return Reviews.objects.create(watchlist = pk)
 
-
 class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializers
     permission_classes = [ReviewUserOrReadOnly]
-
+    throttle_classes = [UserRateThrottle, AnonRateThrottle]
 
 class StreamPlatFormAV(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
