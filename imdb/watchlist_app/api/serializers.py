@@ -11,7 +11,7 @@ class ReviewsSerializers(serializers.ModelSerializer):
 class WatchListSerializers(serializers.ModelSerializer):
 
     length_name = serializers.SerializerMethodField()           #allows me to define a field 
-
+    platform = serializers.CharField(source='platform.name')
     class Meta:
         model = WatchList 
         fields = "__all__"
