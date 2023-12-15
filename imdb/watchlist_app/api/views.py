@@ -116,10 +116,10 @@ class StreamPlatFormDetails(APIView):
 class WatchListAV(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializers
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, filters.OrderingFilter]
     # filter_fields = ['title', 'platform__name']
-    search_fields = ['title', 'platform__name']
-    
+    search_fields = ['=title', '^platform__name']   #= means exact match,   ^ means match start letter. 
+    ordering_fields = ['title']
 
 
 class WatchListList(APIView):
