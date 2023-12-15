@@ -23,8 +23,8 @@ class UserReviews(generics.ListAPIView):
     throttle_classes = [ReviewListThrottle]
     
     def get_queryset(self):
-        pk = self.kwargs['username']
-        return Review.objects.filter(watchlist = pk)
+        username = self.kwargs['username']              #get the username of the user
+        return Reviews.objects.filter(review_user__username = username)
 
 
 class ReviewsList(generics.ListAPIView):
