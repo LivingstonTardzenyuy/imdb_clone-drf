@@ -15,11 +15,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from watchlist_app.api.permissions import IsAdminOrReadOnly, ReviewUserOrReadOnly
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle 
+from watchlist_app.api.throttle import ReviewsCreateThrottle, ReviewListThrottle
 
 class ReviewsList(generics.ListAPIView):
     # queryset = Reviews.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = ReviewsSerializers 
+    throttle_classes = [ReviewListThrottle, AnonRateThrottle]
 
     def get_queryset(self):             #overwritting since  we have a foreign key that we need to obtain. 
         pk = self.kwargs['pk']
@@ -27,7 +29,9 @@ class ReviewsList(generics.ListAPIView):
 
 class ReviewsCreate(generics.CreateAPIView):
     serializer_class = ReviewsSerializers 
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticated]  
+    throttle_classes = [ReviewsCreateThrottle]  
+    
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
 
