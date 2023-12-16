@@ -20,6 +20,9 @@ from rest_framework import filters
 import django_filters.rest_framework
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from watchlist_app.api.pagination import WatchListPagination
+
+
 
 class UserReviews(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -116,14 +119,14 @@ class StreamPlatFormDetails(APIView):
 class WatchListAV(generics.ListAPIView):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializers
-    filter_backends = [DjangoFilterBackend, SearchFilter, filters.OrderingFilter]
+    # filter_backends = [DjangoFilterBackend, SearchFilter, filters.OrderingFilter]
     # filter_fields = ['title', 'platform__name']
-    search_fields = ['=title', '^platform__name']   #= means exact match,   ^ means match start letter. 
-    ordering_fields = ['title']
+    # search_fields = ['=title', '^platform__name']   #= means exact match,   ^ means match start letter. 
+    # ordering_fields = ['title']
+    pagination_class = WatchListPagination
 
 
 class WatchListList(APIView):
-
     permission_classes = [IsAdminOrReadOnly]
     def get(self, request, format = None):
         watchlist = WatchList.objects.all()
