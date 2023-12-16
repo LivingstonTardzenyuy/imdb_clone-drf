@@ -20,7 +20,7 @@ from rest_framework import filters
 import django_filters.rest_framework
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from watchlist_app.api.pagination import WatchListPagination
+from watchlist_app.api.pagination import LimitOffSetPaganationAV
 
 
 
@@ -123,7 +123,7 @@ class WatchListAV(generics.ListAPIView):
     # filter_fields = ['title', 'platform__name']
     # search_fields = ['=title', '^platform__name']   #= means exact match,   ^ means match start letter. 
     # ordering_fields = ['title']
-    pagination_class = WatchListPagination
+    pagination_class = LimitOffSetPaganationAV
 
 
 class WatchListList(APIView):
