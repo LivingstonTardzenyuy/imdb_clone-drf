@@ -30,7 +30,7 @@ class UserReviews(generics.ListAPIView):
     throttle_classes = [ReviewListThrottle]
     
     # def get_queryset(self):
-    #     username = self.kwargs['username']              #get the username of the user
+    #     username = self.kwargs['username']              #get the username of the user.
     #     return Reviews.objects.filter(review_user__username = username)
 
     def get_queryset(self):
