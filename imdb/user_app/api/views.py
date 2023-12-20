@@ -44,4 +44,4 @@ def registration_view(request):
         else:
             data = serializer.errors 
             return Response(data, status=400)  # HTTP 400 Bad Request for invalid data
-        return Response(data)
+        return Response(data, status = status.HTTP_201_CREATED)
