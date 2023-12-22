@@ -16,6 +16,12 @@ class StreamPlatformTestCase(APITestCase):
         #Login in a user. 
         self.token = Token.objects.get(user__username = self.user)
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        
+        self.stream = StreamPlatForm.objects.create(
+            name = "netflix",
+            about = ""
+        )
         
     def test_streamPlatFormCreate(self):
         data = {
