@@ -169,3 +169,9 @@ class ReviewTestCase(APITestCase):
     def test_review_delete(self):
         response = self.client.delete(reverse('reviews', args = (self.review.id,)))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    
+    
+    
+    def test_review_user(self):
+        response = self.client.get('/reviews/?username' + self.user.username)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
