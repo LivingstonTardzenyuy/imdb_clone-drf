@@ -14,7 +14,7 @@ class ReviewUserOrReadOnly(permissions.BasePermission):
             # read-only request
             return True 
         else:
-            return obj.watchlist == request.user 
+            return obj.review_user == request.user 
 
 
 
