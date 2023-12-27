@@ -8,6 +8,8 @@ from watchlist_app.models import *
 
 from watchlist_app.api import serializers 
 from watchlist_app import models
+from rest_framework.request import Request
+from rest_framework.test import force_authenticate
 
 class StreamPlatformTestCase(APITestCase):
     
@@ -102,6 +104,20 @@ class ReviewTestCase(APITestCase):
             active = 'True'
         )
         
+        self.watchlist2 = models.WatchList.objects.create(
+            platform = self.stream,
+            title = 'the pride of abakwa',
+            description = 'best movie in the city',
+            active = 'True'
+        )
+        
+        self.review = models.Reviews.objects.create(
+            review_user = self.user,
+            rating = 2,
+            description = "the best of the best",
+            active = True,
+            watchlist = self.watchlist2
+        )
         
     def test_review_create(self):
         data = {
@@ -114,3 +130,32 @@ class ReviewTestCase(APITestCase):
         
         response = self.client.post(reverse('review-create', args = (self.watchlist.id,)), data)   #we are passing the args bc we are created a review for a particular watchlist
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        
+        # Second attempt should return HTTP 400
+        response = self.client.post(reverse('review-create', args=(self.watchlist.id,)), data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_review_create_unauth(self):
+        data = {
+            'review_user': self.user.pk,
+            'watchlist': self.watchlist.pk,    
+            'rating': 4,
+            'description': "best movie in town",
+            'active': 'True'
+        }        
+        
+        # force_authenticate(request, user=self.user)
+        self.client.force_authenticate(user=None)  # Set user to None for unauthenticated request
+        response = self.client.post(reverse('review-create', args = (self.watchlist.id,)), data) 
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)   
+    
+    def test_review_update(self):
+        data = {
+            'review_user': self.user.pk,
+            'watchlist': self.watchlist.pk,    
+            'rating': 3,
+            'description': "best movie in town",
+            'active': True
+        }   
+        response = self.client.put(reverse('reviews', args = (self.review.id,)), data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)        

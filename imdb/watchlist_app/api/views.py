@@ -53,11 +53,15 @@ class ReviewsCreate(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         pk = self.kwargs['pk']
+        user = self.request.user
 
-        movie = WatchList.objects.get(pk = pk)
-        
-        serializer.save(watchlist = movie)
-        # return Reviews.objects.create(watchlist = pk)
+        existing_review = Reviews.objects.filter(review_user=user, watchlist=pk).first()
+
+        if existing_review:
+            return Response({"detail": "You have already reviewed this movie."}, status=status.HTTP_400_BAD_REQUEST)
+
+        movie = WatchList.objects.get(pk=pk)
+        serializer.save(review_user=user, watchlist=movie)
 
 class ReviewsListDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reviews.objects.all()
