@@ -2,9 +2,9 @@ from rest_framework.test import force_authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from django.urls import reverse
-from django.contrib.auth.models import *
+from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
- 
+from watchlist_app.models import *
 
 from watchlist_app.api import serializers 
 from watchlist_app import models
@@ -39,7 +39,7 @@ class StreamPlatformTestCase(APITestCase):
         
         
     def test_streamplatform_id(self):
-        response = self.client.get(reverse('streamplatform-detail', args = (self.stream),))
+        response = self.client.get(reverse('streamplatform-detail', args = (self.stream.id,)))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         
