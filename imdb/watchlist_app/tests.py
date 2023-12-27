@@ -159,3 +159,13 @@ class ReviewTestCase(APITestCase):
         }   
         response = self.client.put(reverse('reviews', args = (self.review.id,)), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)        
+        
+    
+    def test_review_list(self):
+        response = self.client.get(reverse('review-detials', args = (self.review.id,)))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    
+    def test_review_delete(self):
+        response = self.client.delete(reverse('reviews', args = (self.review.id,)))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
