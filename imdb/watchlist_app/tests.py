@@ -87,8 +87,8 @@ class ReviewTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="example", password="Password@123")
         self.token = Token.objects.get(user__username = self.user)
-        self.client.credentials(HTTP_AUTHORIZATION='Token' + self.token.key)
-        
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
         self.stream = models.StreamPlatForm.objects.create(
             name="Netflix",
             about="#1 platform",
@@ -103,4 +103,14 @@ class ReviewTestCase(APITestCase):
         )
         
         
+    def test_review_create(self):
+        data = {
+            'review_user': self.user.pk,
+            'watchlist': self.watchlist.pk,    
+            'rating': 4,
+            'description': "best movie in town",
+            'active': 'True'
+        }
         
+        response = self.client.post(reverse('review-create', args = (self.watchlist.id,)), data)   #we are passing the args bc we are created a review for a particular watchlist
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
