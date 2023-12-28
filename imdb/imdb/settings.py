@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'drf_spectacular',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -164,6 +165,8 @@ REST_FRAMEWORK = {
   'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
     ),    
+  
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE': 2,
 
@@ -171,4 +174,12 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": True,
+}
+
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'IMDB clone',
+    'DESCRIPTION': 'This is the clone of IMDB using DRF',
+    # 'VERSION': '1.0.0',
 }
