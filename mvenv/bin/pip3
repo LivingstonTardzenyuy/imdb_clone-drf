@@ -1,4 +1,4 @@
-#!/home/kongnyuy/Desktop/imdb_clone/imdb_clone-drf/mvenv/bin/python3
+#!/home/kongnyuy/Desktop/imdb_clone/imdb_clone-drf/mvenv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
